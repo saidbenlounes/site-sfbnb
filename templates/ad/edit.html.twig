@@ -1,0 +1,27 @@
+{# empty Twig template #}
+{% extends "base.html.twig" %}
+{% block title %}
+    creation d'une annonce
+{% endblock %}
+{% form_theme form 'ad/_collection.html.twig' %}
+
+{% block body %}
+    <div class='container'>
+        <h1>modification de l'annonce {{ ad.title }} </h1>
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+        <button type='submit' class='btn btn-primary'>Modifier</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    <script src='/js/ad.js'>
+
+    </script>
+
+{% endblock %}
