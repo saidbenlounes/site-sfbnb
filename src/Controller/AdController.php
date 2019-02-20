@@ -39,6 +39,7 @@ class AdController extends AbstractController {
 
                 $manager->persist($image);
             }
+            $ad->setAuthor($this->getUser());
             $manager->persist($ad);
             $manager->flush();
             $this->addFlash(
@@ -66,9 +67,9 @@ class AdController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($ad->getImages()as $image) {
                 $image->setAd($ad);
-
                 $manager->persist($image);
             }
+
             $manager->persist($ad);
             $manager->flush();
             $this->addFlash(
