@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormError as FormError;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AccountController extends AbstractController {
 
@@ -68,6 +70,7 @@ class AccountController extends AbstractController {
 
     /**
      * @Route("account/profile", name="account_profile")
+     * @IsGranted("ROLE_USER")
      */
     public function profile(Request $request, ObjectManager $manager) {
 
@@ -92,6 +95,7 @@ class AccountController extends AbstractController {
 
     /**
      * @Route("account/password-update", name="account_password")
+     * @IsGranted("ROLE_USER")
      */
     public function updatePassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder) {
         $passwordUpdate = new PasswordUpdate();
@@ -123,6 +127,7 @@ class AccountController extends AbstractController {
 
     /**
      * @Route("/account", name="account_index")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function myAccount() {

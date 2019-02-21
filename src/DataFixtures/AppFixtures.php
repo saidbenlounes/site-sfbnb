@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Ad;
 use App\Entity\Image;
 use App\Entity\User;
+use App\Entity\Role;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -22,6 +23,21 @@ class AppFixtures extends Fixture {
 
 
         $faker = Factory::create('fr_FR');
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+        $adminUser = new User();
+
+        $adminUser->setFirstName('ben')
+                ->setLastName('said')
+                ->setEmail('ben@gmail.com')
+                ->setHash($this->encoder->encodePassword($adminUser, '123'))
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>' . join($faker->paragraphs(5), '</p><p>') . '</p>')
+                ->setPicture('http://placehold.it/64x64')
+                ->addUserRole($adminRole);
+        $manager->persist($adminUser);
+
         $users = [];
         $genres = ['male', 'female'];
 
@@ -31,7 +47,7 @@ class AppFixtures extends Fixture {
 
             $picture = 'https://randomuser.me/api/portraits/';
             $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-            $picture .= ($genre == 'male' ? '/men' : 'women/') . $pictureId;
+            $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setFirstName($faker->firstName)

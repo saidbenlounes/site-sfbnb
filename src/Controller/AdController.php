@@ -11,6 +11,8 @@ use App\Entity\Ad;
 use App\Entity\Image;
 use App\Form\AnnonceType;
 use App\Repository\AdRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdController extends AbstractController {
 
@@ -27,6 +29,7 @@ class AdController extends AbstractController {
 
     /**
      * @Route("/ads/new", name="ads_create")
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function create(Request $request, ObjectManager $manager) {
@@ -58,6 +61,7 @@ class AdController extends AbstractController {
 
     /**
      * @Route("/ads/{slug}/edit", name="ads_edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()")
      * @return Response
      */
     public function edit(Ad $ad, Request $request, ObjectManager $manager) {
@@ -95,6 +99,25 @@ class AdController extends AbstractController {
         return $this->render('ad/show.html.twig', [
                     'ad' => $ad,
         ]);
+    }
+
+    /**
+     * Permet de supprimer une annonce
+     *
+     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user == ad.getAuthor()", message="Vous n'avez pas le droit d'accéder à cette ressource")
+     *
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function delete(Ad $ad, ObjectManager $manager) {
+        $manager->remove($ad);
+        $manager->flush();
+        $this->addFlash(
+                'success', "L'annonce <strong>{$ad->getTitle()}</strong> a bien été supprimée !"
+        );
+        return $this->redirectToRoute("ads_index");
     }
 
 }
