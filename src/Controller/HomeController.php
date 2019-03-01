@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use App\Repository\AdRepository;
+use App\Repository\UserRepository;
 
 class HomeController extends Controller {
 
@@ -21,9 +23,12 @@ class HomeController extends Controller {
     /**
      * @Route("/", name="homepage")
      */
-    public function home() {
+    public function home(AdRepository $adRepo, UserRepository $userRepo) {
         return $this->render(
-                        'home.html.twig', ['title' => 'bonjour a tous twig']
+                        'home.html.twig', [
+                    'ads' => $adRepo->findBestAds(3),
+                    'users' => $userRepo->findBestUsers(2)
+                        ]
         );
     }
 

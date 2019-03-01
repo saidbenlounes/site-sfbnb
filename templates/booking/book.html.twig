@@ -36,9 +36,10 @@
         {{form_end(form)}}
     </div>
 {% endblock %}
-{% block javascripts  %}
+{% block javascripts %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#booking_startDate, #booking_endDate').datepicker({
@@ -59,7 +60,6 @@
                         .val()
                         .replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1')
                         );
-
                 const startDate = new Date(
                         $('#booking_startDate')
                         .val()
@@ -76,7 +76,6 @@
             }
 
     </script>
-
 
 
 {% endblock %}
