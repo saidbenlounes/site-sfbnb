@@ -70,7 +70,7 @@ private $rooms;
 
 /**
  * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="ad", orphanRemoval=true)
- * @Assert\valid()
+ * @Assert\Valid()
  */
 private $images;
 
